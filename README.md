@@ -19,7 +19,7 @@ This repository contains Terraform configuration files for managing Tailscale ne
     ├── main.tf              # Main Tailscale resources
     ├── provider.tf          # Terraform provider configuration
     ├── variables.tf         # Variable definitions
-    ├── values.auto.tfvars   # Variable values (contains sensitive data)
+    ├── values.auto.tfvars   # Variable values (contains sensitive data, should not be committed to version control)
     └── terraform.tfstate    # Terraform state file
 ```
 
