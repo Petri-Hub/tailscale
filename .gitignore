@@ -42,3 +42,4 @@ terraform.rc
 
 # Debian temporary files
 *.deb
+*.deb.*
