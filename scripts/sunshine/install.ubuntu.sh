@@ -31,21 +31,23 @@ removeSunshineInstallation(){
 }
 
 setupSunshineStartup(){
-  echo "
-    [Unit]
-    Description=Sunshine remote desktop streaming server
-    After=graphical-session.target
-    Wants=graphical-session.target
+  sudo tee "$SERVICE_PATH" > /dev/null <<EOF
+[Unit]
+Description=Sunshine remote desktop streaming server
+After=graphical-session.target
+Wants=graphical-session.target
 
-    [Service]
-    Type=simple
-    ExecStart=/usr/bin/sunshine
-    Restart=always
-    RestartSec=5
+[Service]
+Type=simple
+ExecStart=/usr/bin/sunshine
+Restart=always
+RestartSec=5
+Environment=HOME=%h
+Environment=XDG_RUNTIME_DIR=/run/user/%i
 
-    [Install]
-    WantedBy=default.target
-  " > "$SERVICE_PATH"
+[Install]
+WantedBy=default.target
+EOF
 }
 
 setupServiceStartup(){

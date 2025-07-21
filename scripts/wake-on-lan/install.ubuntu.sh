@@ -11,18 +11,18 @@ installWakeOnLanCLI(){
 }
 
 setupWakeOnLanForFutureSessions(){
-  echo "
-    [Unit]
-    Description=Enable Wake-on-LAN on interface '$NETWORK_INTERFACE'
-    After=network-online.target
+  sudo tee "$SERVICE_PATH" > /dev/null <<EOF
+[Unit]
+Description=Enable Wake-on-LAN on interface '$NETWORK_INTERFACE'
+After=network-online.target
 
-    [Service]
-    Type=oneshot
-    ExecStart=/usr/sbin/ethtool -s $NETWORK_INTERFACE wol g
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/ethtool -s $NETWORK_INTERFACE wol g
 
-    [Install]
-    WantedBy=multi-user.target
-  " > "$SERVICE_PATH"
+[Install]
+WantedBy=multi-user.target
+EOF
 }
 
 setupServiceStartup(){
