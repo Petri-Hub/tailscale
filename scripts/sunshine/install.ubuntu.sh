@@ -4,28 +4,36 @@ source .env
 
 PACKAGE="sunshine-${DISTRO}-${VERSION}-${ARCHITECTURE}.deb"
 
-function updateSystem(){
+updateSystem(){
   sudo apt-get update
 }
 
-function installDependencies(){
+installDependencies(){
   sudo apt-get install -y wget curl
 }
 
-function downloadSunshine(){
+downloadSunshine(){
   wget https://github.com/LizardByte/Sunshine/releases/latest/download/${PACKAGE}
 }
 
-function installSunshine(){
+installSunshine(){
   sudo dpkg -i ./${PACKAGE}
 }
 
-function installMissingDependencies(){
+installMissingDependencies(){
   sudo apt-get install -f -y
 }
 
-function removeSunshineInstallation(){
-  rm -f ./${PACKAGE}
+removeSunshineInstallation(){
+  rm -f .S/${PACKAGE}
+}
+
+startSunshine(){
+  systemctl --user start sunshine
+}
+
+setupSunshineStartup(){
+  systemctl --user enable sunshine
 }
 
 updateSystem
@@ -34,3 +42,5 @@ downloadSunshine
 installSunshine
 installMissingDependencies
 removeSunshineInstallation
+setupSunshineStartup
+startSunshine
