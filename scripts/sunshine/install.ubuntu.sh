@@ -2,7 +2,9 @@
 
 source .env
 
-PACKAGE="sunshine-${DISTRO}-${VERSION}-${ARCHITECTURE}.deb"
+PACKAGE="sunshine-${DISTRO}-${DISTRO_VERSION}-${SYSTEM_ARCHITECTURE}.deb"
+SERVICE_NAME="sunshine.service"
+SERVICE_PATH="/etc/systemd/user/$SERVICE_NAME"
 
 updateSystem(){
   sudo apt-get update
@@ -25,15 +27,37 @@ installMissingDependencies(){
 }
 
 removeSunshineInstallation(){
-  rm -f .S/${PACKAGE}
+  rm -f ./${PACKAGE}
+}
+
+setupSunshineStartup(){
+  echo "
+    [Unit]
+    Description=Sunshine remote desktop streaming server
+    After=graphical-session.target
+    Wants=graphical-session.target
+
+    [Service]
+    Type=simple
+    ExecStart=/usr/bin/sunshine
+    Restart=always
+    RestartSec=5
+
+    [Install]
+    WantedBy=default.target
+  " > "$SERVICE_PATH"
+}
+
+setupServiceStartup(){
+  sudo loginctl enable-linger $USER
+  sudo systemctl daemon-reload
+
+  systemctl --user daemon-reload
+  systemctl --user enable sunshine
 }
 
 startSunshine(){
   systemctl --user start sunshine
-}
-
-setupSunshineStartup(){
-  systemctl --user enable sunshine
 }
 
 updateSystem
@@ -43,4 +67,5 @@ installSunshine
 installMissingDependencies
 removeSunshineInstallation
 setupSunshineStartup
+setupServiceStartup
 startSunshine
