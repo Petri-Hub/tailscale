@@ -5,6 +5,11 @@ source .env
 SERVICE_NAME="wol.service"
 SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
 
+installWakeOnLanCLI(){
+  sudo apt update
+  sudo apt install -y wakeonlan
+}
+
 setupWakeOnLanForFutureSessions(){
   echo "
     [Unit]
@@ -26,5 +31,6 @@ setupServiceStartup(){
   sudo systemctl start "$SERVICE_NAME"
 }
 
+installWakeOnLanCLI
 setupWakeOnLanForFutureSessions
 setupServiceStartup

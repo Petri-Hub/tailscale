@@ -22,14 +22,12 @@ reloadSystemdDaemon(){
   sudo systemctl daemon-reload
 }
 
-removeWakeOnLanService(){
-  stopAndDisableWakeOnLanService
-  removeWakeOnLanForFutureSessions
-  disableWakeOnLanForCurrentSession
-  reloadSystemdDaemon
+removeWakeOnLanCLI(){
+  sudo apt-get remove -y wakeonlan
 }
 
 stopAndDisableWakeOnLanService
 removeWakeOnLanForFutureSessions
 disableWakeOnLanForCurrentSession
 reloadSystemdDaemon
+removeWakeOnLanCLI
